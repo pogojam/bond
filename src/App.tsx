@@ -1,25 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import "normalize.css";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { ThemeProvider } from "styled-components";
+import "./App.css";
+import { GlobalStyles } from "./App.styles";
+import { Background } from "./components/background/background";
+import { Bar } from "./components/bar/bar";
+import { Nav } from "./components/nav/nav";
+import { HomeContainer } from "./containers/home/home.container";
+import { TroveContainer } from "./containers/trove/trove.container";
+import { WalletContext } from "./context/wallet.context";
+import { ModelContext } from "./models/model";
+import { Theme } from "./theme";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={Theme}>
+      <WalletContext>
+        <ModelContext>
+          <GlobalStyles />
+          <Router>
+            <Background>
+              <Route path="/App" component={Bar} />
+              <Route path="/App" component={Nav} />
+              <Switch>
+                <Route exact path="/" component={HomeContainer} />
+                <Route exact path="/App/Home" component={TroveContainer} />
+                <Route exact path="/App/Trove" component={TroveContainer} />
+              </Switch>
+            </Background>
+          </Router>
+        </ModelContext>
+      </WalletContext>
+    </ThemeProvider>
   );
 }
 
